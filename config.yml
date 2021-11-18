@@ -1,0 +1,16 @@
+server:
+  host: 127.0.0.1
+  port: 8111
+  timeout:
+    server: 30
+    read: 15
+    write: 10
+    idle: 5
+  db:
+    dsn: postgres://username:password@postgres/hw9?sslmode=disable
+    maxOpenConns: 25
+    maxIdleConns: 25
+    maxIdleTime: 15m
+    
+  
+
