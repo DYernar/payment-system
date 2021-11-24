@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  postgres:
+    build: ./db
+    restart: always
+    volumes: 
+      - ./data:/data
+    environment: 
+      - POSTGRES_USER=username
+      - POSTGRES_HOST_AUTH_METHOD=trust
+      - POSTGRES_PASSWROD=password
+      - POSTGRES_DB=hw9 
+    ports:
+      - 5432:5432
+    
+  app:
+    build: ./
+    command: ./app
+    ports:
+      - 8111:8111
+    depends_on: 
+      - postgres
+
+
+    
+
+
+    
+
