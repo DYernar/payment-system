@@ -81,16 +81,16 @@ func (app *application) insertToken(token string, login string) error {
 	return app.redisConn.Set(key, token, app.config.Server.RefreshTtl).Err()
 }
 
-func (app *application) findToken(login string, token string) bool {
-	key := fmt.Sprintf("user:%v", login)
+// func (app *application) findToken(login string, token string) bool {
+// 	key := fmt.Sprintf("user:%v", login)
 
-	value, err := app.redisConn.Get(key).Result()
-	if err != nil {
-		return false
-	}
+// 	value, err := app.redisConn.Get(key).Result()
+// 	if err != nil {
+// 		return false
+// 	}
 
-	return token == value
-}
+// 	return token == value
+// }
 
 func (app *application) LoginHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	// 1. get user login and password from request body
