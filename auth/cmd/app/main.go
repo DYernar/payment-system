@@ -8,6 +8,7 @@ import (
 	"log"
 	"time"
 
+	"github.com/go-redis/redis"
 	_ "github.com/lib/pq"
 )
 
@@ -29,6 +30,22 @@ func main() {
 	}
 
 	app := NewApplication(db, config)
+
+	// connect to redis
+	client := redis.NewClient(&redis.Options{
+		Addr:     "localhost:6379",
+		Password: "",
+		DB:       0,
+	})
+
+	pong, err := client.Ping().Result()
+	if err != nil {
+		log.Fatalf("Ping error: %v", err)
+	}
+
+	app.redisConn = client
+
+	log.Println(pong)
 
 	app.run()
 }

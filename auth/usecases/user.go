@@ -18,3 +18,7 @@ func (uc *UserUsecases) CreateUser(user *domain.User) (*domain.User, error) {
 func (uc *UserUsecases) UpdateUser(user *domain.User) (*domain.User, error) {
 	return uc.Repo.UpdateUser(user)
 }
+
+func (uc *UserUsecases) GetUserByLogin(login string) (*domain.User, error) {
+	return uc.Repo.GetUserByLogin(login)
+}

@@ -8,6 +8,7 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/go-redis/redis"
 	"github.com/julienschmidt/httprouter"
 	"payment.system.com/domain"
 	"payment.system.com/repository"
@@ -19,6 +20,7 @@ type application struct {
 	Logger       log.Logger
 	UserUsecases domain.UserUsecases
 	RoleUsecases domain.RoleUsecases
+	redisConn    *redis.Client
 }
 
 func NewApplication(db *sql.DB, config *config) *application {

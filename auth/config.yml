@@ -1,0 +1,22 @@
+server:
+  host: 127.0.0.1
+  port: 8111
+  accessSecret: 18DbJX9NR0WApJtB9OgmQkdlmHLwaHpK
+  refreshSecret: 1s342324dfgsSADFASSDGHTYQkdlmHLwaHpK
+  refreshTtl: 90000m
+  accessTtl: 10000m
+  timeout:
+    server: 30
+    read: 15
+    write: 10
+    idle: 5
+  db:
+    dsn: postgres://yernar:yernar@localhost:5432/payment?sslmode=disable
+    maxOpenConns: 25
+    maxIdleConns: 25
+    maxIdleTime: 15m
+    
+  
+
+# create migration files migrate create -seq -ext=.sql -dir=./scripts create_users_table
+# migrate : migrate -path=./scripts -database=postgresql://yernar:yernar@localhost:5432/payment?sslmode=disable up

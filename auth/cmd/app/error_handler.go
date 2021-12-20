@@ -15,8 +15,12 @@ func (app *application) serverError(w http.ResponseWriter, r *http.Request, err 
 	app.writeJson(w, http.StatusInternalServerError, envelope{"message": "internal server error ", "error": err}, nil)
 }
 
-func (app *application) unauthorizedRequest(w http.ResponseWriter, r *http.Request) {
-	app.writeJson(w, http.StatusUnauthorized, envelope{"message": "you should be authorized to see this page!"}, nil)
+func (app *application) unauthorizedRequest(w http.ResponseWriter, r *http.Request, err error) {
+	if err == nil {
+		app.writeJson(w, http.StatusUnauthorized, envelope{"message": "user is not authorized"}, nil)
+		return
+	}
+	app.writeJson(w, http.StatusUnauthorized, envelope{"message": err.Error()}, nil)
 }
 
 func (app *application) methodNotAllowed(w http.ResponseWriter, r *http.Request) {

@@ -24,10 +24,14 @@ func (uc *RoleUsecases) UpdateRole(r *domain.Role) (*domain.Role, error) {
 	return uc.Repo.UpdateRole(r)
 }
 
-func (uc *RoleUsecases) AddRoleForUser(userId, roleId int64) error {
-	return uc.Repo.AddRoleForUser(userId, roleId)
+func (uc *RoleUsecases) AddRoleForUser(userId int64, role string) error {
+	return uc.Repo.AddRoleForUser(userId, role)
 }
 
-func (uc *RoleUsecases) CheckUserHasRole(userId, roleId int64) (bool, error) {
-	return uc.Repo.CheckUserHasRole(userId, roleId)
+func (uc *RoleUsecases) CheckUserHasRole(userId int64, role string) (bool, error) {
+	return uc.Repo.CheckUserHasRole(userId, role)
+}
+
+func (uc *RoleUsecases) GetRoleForUser(userId int64) (*domain.Role, error) {
+	return uc.Repo.GetRoleForUser(userId)
 }

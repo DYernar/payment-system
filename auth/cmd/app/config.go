@@ -9,9 +9,13 @@ import (
 
 type config struct {
 	Server struct {
-		Host string `yaml:"host"`
-		Port int    `yaml:"port"`
-		Db   struct {
+		Host          string        `yaml:"host"`
+		Port          int           `yaml:"port"`
+		AccessSecret  string        `yaml:"accessSecret"`
+		RefreshSecret string        `yaml:"refreshSecret"`
+		AccessTtl     time.Duration `yaml:"accessTtl"`
+		RefreshTtl    time.Duration `yaml:"refreshTtl"`
+		Db            struct {
 			Dsn          string `yaml:"dsn"`
 			MaxOpenConns int    `yaml:"maxOpenConns"`
 			MaxIdleConns int    `yaml:"maxIdleConns"`
