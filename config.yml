@@ -7,7 +7,7 @@ server:
     write: 10
     idle: 5
   db:
-    dsn: postgres://username:password@postgres/hw9?sslmode=disable
+    dsn: postgres://yernar:yernar@localhost:5432/payment?sslmode=disable
     maxOpenConns: 25
     maxIdleConns: 25
     maxIdleTime: 15m

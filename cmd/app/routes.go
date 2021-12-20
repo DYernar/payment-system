@@ -13,6 +13,9 @@ func (app *application) router() http.Handler {
 	router.MethodNotAllowed = http.HandlerFunc(app.methodNotAllowed)
 
 	router.GET("/healthcheck", app.healthcheck)
+	router.POST("/signup", app.SignupHandler)
+	router.POST("/login", app.LoginHandler)
+	router.POST("/validate", app.ValidateToken)
 
 	return router
 }

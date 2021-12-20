@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"log"
 	"net/http"
 	"os"
@@ -8,17 +9,29 @@ import (
 	"time"
 
 	"github.com/julienschmidt/httprouter"
+	"payment.system.com/domain"
+	"payment.system.com/repository"
+	"payment.system.com/usecases"
 )
 
 type application struct {
-	config config
-	Logger log.Logger
+	config       config
+	Logger       log.Logger
+	UserUsecases domain.UserUsecases
+	RoleUsecases domain.RoleUsecases
 }
 
-func NewApplication(config *config) *application {
+func NewApplication(db *sql.DB, config *config) *application {
+
+	userRepo := repository.NewPgUserRepository(db)
+
+	roleRepo := repository.NewPgRoleRepo(db)
+
 	return &application{
-		Logger: *log.New(os.Stdout, time.Now().String()+" : ", 0),
-		config: *config,
+		Logger:       *log.New(os.Stdout, time.Now().String()+" : ", 0),
+		config:       *config,
+		UserUsecases: usecases.NewUserUsecases(userRepo),
+		RoleUsecases: usecases.NewRoleUsecases(roleRepo),
 	}
 }
 

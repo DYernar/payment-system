@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"regexp"
 	"strings"
 )
 
@@ -77,4 +78,56 @@ func (app *application) readJSON(w http.ResponseWriter, r *http.Request, dst int
 		return errors.New("body must only contain a single JSON value")
 	}
 	return nil
+}
+
+func (app *application) IsValidIIN(iin string) bool {
+	//length should be 12
+	len12Match, _ := regexp.MatchString("^\\d{12}$", iin)
+	if !len12Match {
+		return false
+	}
+
+	iinslice := []int{}
+
+	for i := range iin {
+		iinslice = append(iinslice, int(iin[i]-'0'))
+	}
+
+	// check year
+	year := iinslice[0]*10 + iinslice[1]
+	if year > 99 || year < 0 {
+		return false
+	}
+
+	month := iinslice[2]*10 + iinslice[3]
+
+	if month <= 0 || month > 12 {
+		return false
+	}
+
+	day := iinslice[4]*10 + iinslice[5]
+
+	if !(day >= 1 && day <= 31) {
+		return false
+	}
+
+	if !(iinslice[6] >= 1 && iinslice[6] <= 6) {
+		return false
+	}
+
+	a12 := (iinslice[0]*1 + iinslice[1]*2 + iinslice[2]*3 + iinslice[3]*4 + iinslice[4]*5 + iinslice[5]*6 + iinslice[6]*7 + iinslice[7]*8 + iinslice[8]*9 + iinslice[9]*10 + iinslice[10]*11) % 11
+
+	if a12 == 10 {
+		// check with other weights
+		a12 = (iinslice[0]*3 + iinslice[1]*4 + iinslice[2]*5 + iinslice[3]*6 + iinslice[4]*7 + iinslice[5]*8 + iinslice[6]*9 + iinslice[7]*10 + iinslice[8]*11 + iinslice[9]*1 + iinslice[10]*2) % 11
+		if a12 == 10 {
+			return false
+		}
+	}
+
+	if !(a12 >= 0 && a12 <= 9) {
+		return false
+	}
+
+	return true
 }
