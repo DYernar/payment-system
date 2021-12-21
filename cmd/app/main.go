@@ -14,7 +14,7 @@ import (
 
 func main() {
 	var configPath string
-	flag.StringVar(&configPath, "config", "./config.yml", "path to config file")
+	flag.StringVar(&configPath, "config", "./prod-config.yml", "path to config file")
 
 	flag.Parse()
 	config, err := NewConfig(configPath)
@@ -33,7 +33,7 @@ func main() {
 
 	// connect to redis
 	client := redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379",
+		Addr:     "redis:6379",
 		Password: "",
 		DB:       0,
 	})

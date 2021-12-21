@@ -5,16 +5,17 @@ services:
     image: redis
     ports:
       - 6379:6379
+      
   postgres:
     build: ./db
     restart: always
     volumes: 
       - ./data:/data
     environment: 
-      - POSTGRES_USER=username
+      - POSTGRES_USER=payment
       - POSTGRES_HOST_AUTH_METHOD=trust
-      - POSTGRES_PASSWROD=password
-      - POSTGRES_DB=hw9 
+      - POSTGRES_PASSWROD=payment
+      - POSTGRES_DB=payment_db 
     ports:
       - 5432:5432
     
@@ -24,6 +25,10 @@ services:
     ports:
       - 8111:8111
     depends_on: 
+      - redis
+      - postgres
+    links:
+      - redis
       - postgres
 
 
