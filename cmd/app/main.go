@@ -14,7 +14,7 @@ import (
 
 func main() {
 	var configPath string
-	flag.StringVar(&configPath, "config", "./prod-config.yml", "path to config file")
+	flag.StringVar(&configPath, "config", "./pod-config.yml", "path to config file")
 
 	flag.Parse()
 	config, err := NewConfig(configPath)
@@ -51,7 +51,7 @@ func main() {
 }
 
 func dbConn(cfg config) (*sql.DB, error) {
-	fmt.Println(cfg.Server.Db.Dsn)
+	fmt.Printf("Connecting to db: %v\n", cfg.Server.Db.Dsn)
 	db, err := sql.Open("postgres", cfg.Server.Db.Dsn)
 	if err != nil {
 		return nil, err
