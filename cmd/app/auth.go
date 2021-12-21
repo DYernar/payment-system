@@ -172,7 +172,7 @@ func (app *application) LoginHandler(w http.ResponseWriter, r *http.Request, ps 
 		return
 	}
 	// 6. return token
-	app.writeJson(w, http.StatusAccepted, envelope{"AccessToken": "Bearer " + accessSignedToken, "RefreshToken": "Bearer" + refreshSignedToken}, nil)
+	app.writeJson(w, http.StatusAccepted, envelope{"AccessToken": "Bearer " + accessSignedToken, "RefreshToken": "Bearer " + refreshSignedToken}, nil)
 }
 
 func (app *application) parseToken(token string, isAccess bool) (string, error) {
