@@ -32,6 +32,9 @@ type config struct {
 			Group  string `yaml:"group"`
 			Topic  string `yaml:"topic"`
 		}
+		Redis struct {
+			Addr string `yaml:"addr"`
+		}
 	} `yaml:"server"`
 }
 

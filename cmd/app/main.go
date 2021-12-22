@@ -33,7 +33,7 @@ func main() {
 
 	// connect to redis
 	client := redis.NewClient(&redis.Options{
-		Addr:     "redis:6379",
+		Addr:     app.config.Server.Redis.Addr,
 		Password: "",
 		DB:       0,
 	})

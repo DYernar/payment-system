@@ -19,6 +19,8 @@ server:
     broker: localhost:29092
     group: auth
     topic: auth
+  redis:
+    addr: localhost:6379
     
   
 
