@@ -15,6 +15,10 @@ server:
     maxOpenConns: 25
     maxIdleConns: 25
     maxIdleTime: 15m
+  kafka: 
+    broker: localhost:29092
+    group: auth
+    topic: auth
     
   
 

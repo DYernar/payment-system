@@ -15,7 +15,10 @@ server:
     maxOpenConns: 25
     maxIdleConns: 25
     maxIdleTime: 15m
-    
+  kafka: 
+    broker: 2.57.97.57:29092
+    group: auth
+    topic: auth
   
 
 # create migration files migrate create -seq -ext=.sql -dir=./scripts create_users_table

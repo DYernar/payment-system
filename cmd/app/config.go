@@ -27,6 +27,11 @@ type config struct {
 			Read   time.Duration `yaml:"read"`
 			Idle   time.Duration `yaml:"idle"`
 		} `yaml:"timeout"`
+		Kafka struct {
+			Broker string `yaml:"broker"`
+			Group  string `yaml:"group"`
+			Topic  string `yaml:"topic"`
+		}
 	} `yaml:"server"`
 }
 
