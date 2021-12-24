@@ -21,6 +21,8 @@ server:
     topic: auth
   redis:
     addr: localhost:6379
+  grpc:
+    port: 5555
     
   
 

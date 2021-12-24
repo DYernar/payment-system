@@ -35,6 +35,9 @@ type config struct {
 		Redis struct {
 			Addr string `yaml:"addr"`
 		}
+		Grpc struct {
+			Port int `yaml:"port"`
+		} `yaml:"grpc"`
 	} `yaml:"server"`
 }
 

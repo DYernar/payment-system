@@ -46,7 +46,7 @@ func main() {
 	app.redisConn = client
 
 	log.Println(pong)
-
+	go app.StartGrpcServer()
 	app.run()
 }
 
