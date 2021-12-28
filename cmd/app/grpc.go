@@ -77,7 +77,7 @@ func (a *AuthServiceServer) VerifyUser(ctx context.Context, t *pb.Token) (*pb.Au
 func (app *application) StartGrpcServer() error {
 	rand.Seed(time.Now().Unix())
 
-	listener, err := net.Listen("tcp", fmt.Sprintf(":%d", app.config.Server.Grpc.Port))
+	listener, err := net.Listen("tcp", fmt.Sprintf(":%d", app.config.Server.Grpc.AuthPort))
 
 	if err != nil {
 		app.Logger.Printf("Error starting grpc server %v\n", err)
@@ -97,6 +97,7 @@ func (app *application) StartGrpcServer() error {
 	err = grpcServer.Serve(listener)
 	if err != nil {
 		app.Logger.Printf("error starting grpc server %v ", err)
+		return err
 	}
 	return nil
 }

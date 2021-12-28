@@ -103,3 +103,89 @@ var AuthService_ServiceDesc = grpc.ServiceDesc{
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "auth.proto",
 }
+
+// WalletsServiceClient is the client API for WalletsService service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+type WalletsServiceClient interface {
+	GetWallets(ctx context.Context, in *Iin, opts ...grpc.CallOption) (*WalletsList, error)
+}
+
+type walletsServiceClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewWalletsServiceClient(cc grpc.ClientConnInterface) WalletsServiceClient {
+	return &walletsServiceClient{cc}
+}
+
+func (c *walletsServiceClient) GetWallets(ctx context.Context, in *Iin, opts ...grpc.CallOption) (*WalletsList, error) {
+	out := new(WalletsList)
+	err := c.cc.Invoke(ctx, "/auth.WalletsService/GetWallets", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// WalletsServiceServer is the server API for WalletsService service.
+// All implementations must embed UnimplementedWalletsServiceServer
+// for forward compatibility
+type WalletsServiceServer interface {
+	GetWallets(context.Context, *Iin) (*WalletsList, error)
+	mustEmbedUnimplementedWalletsServiceServer()
+}
+
+// UnimplementedWalletsServiceServer must be embedded to have forward compatible implementations.
+type UnimplementedWalletsServiceServer struct {
+}
+
+func (UnimplementedWalletsServiceServer) GetWallets(context.Context, *Iin) (*WalletsList, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetWallets not implemented")
+}
+func (UnimplementedWalletsServiceServer) mustEmbedUnimplementedWalletsServiceServer() {}
+
+// UnsafeWalletsServiceServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to WalletsServiceServer will
+// result in compilation errors.
+type UnsafeWalletsServiceServer interface {
+	mustEmbedUnimplementedWalletsServiceServer()
+}
+
+func RegisterWalletsServiceServer(s grpc.ServiceRegistrar, srv WalletsServiceServer) {
+	s.RegisterService(&WalletsService_ServiceDesc, srv)
+}
+
+func _WalletsService_GetWallets_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Iin)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(WalletsServiceServer).GetWallets(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/auth.WalletsService/GetWallets",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(WalletsServiceServer).GetWallets(ctx, req.(*Iin))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+// WalletsService_ServiceDesc is the grpc.ServiceDesc for WalletsService service.
+// It's only intended for direct use with grpc.RegisterService,
+// and not to be introspected or modified (even as a copy)
+var WalletsService_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "auth.WalletsService",
+	HandlerType: (*WalletsServiceServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "GetWallets",
+			Handler:    _WalletsService_GetWallets_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "auth.proto",
+}

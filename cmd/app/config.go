@@ -36,7 +36,8 @@ type config struct {
 			Addr string `yaml:"addr"`
 		}
 		Grpc struct {
-			Port int `yaml:"port"`
+			AuthPort    int `yaml:"authport"`
+			ParsingPort int `yaml:"parsingport"`
 		} `yaml:"grpc"`
 	} `yaml:"server"`
 }

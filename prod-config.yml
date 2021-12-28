@@ -22,7 +22,8 @@ server:
   redis:
     addr: redis:6379
   grpc:
-    port: 5555
+    authport: 5555
+    parsingport: 5556
   
 
 # create migration files migrate create -seq -ext=.sql -dir=./scripts create_users_table
