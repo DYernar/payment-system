@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"errors"
-	"fmt"
 	"net/http"
 
 	"github.com/julienschmidt/httprouter"
@@ -32,7 +31,7 @@ func (app *application) GetUser(w http.ResponseWriter, r *http.Request, ps httpr
 		grpc.WithInsecure(),
 	}
 
-	conn, err := grpc.Dial(fmt.Sprintf("parsing:%d", app.config.Server.Grpc.ParsingPort), opts...)
+	conn, err := grpc.Dial(app.config.Server.Grpc.Parsing, opts...)
 
 	if err != nil {
 		app.Logger.Printf("error dialing grpc %v", err)

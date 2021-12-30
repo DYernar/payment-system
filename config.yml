@@ -22,8 +22,10 @@ server:
   redis:
     addr: localhost:6379
   grpc:
-    port: 5555
-    
+    authport: 5555
+    parsingport: 5556
+    auth: localhost:5555
+    parsing: localhost:5556  
   
 
 # create migration files migrate create -seq -ext=.sql -dir=./scripts create_users_table
