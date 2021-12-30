@@ -24,8 +24,8 @@ server:
   grpc:
     authport: 5555
     parsingport: 5556
-    auth: auth:8111
-    parsing: parsing:8112  
+    auth: auth:5555
+    parsing: parsing:5556  
   
 
 # create migration files migrate create -seq -ext=.sql -dir=./scripts create_users_table
