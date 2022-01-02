@@ -30,3 +30,4 @@ server:
 
 # create migration files migrate create -seq -ext=.sql -dir=./scripts create_users_table
 # migrate : migrate -path=./scripts -database=postgresql://yernar:yernar@localhost:5432/payment?sslmode=disable up
+# go run cmd/app/*.go -config="config.yml"
