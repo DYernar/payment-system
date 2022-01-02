@@ -92,6 +92,68 @@ func (app *application) insertToken(token string, login string) error {
 // 	return token == value
 // }
 
+func (app *application) CreateAdmin(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	type User struct {
+		Iin      string `json:"iin"`
+		Login    string `json:"login"`
+		Password string `json:"password"`
+	}
+
+	var user User
+
+	err := app.readJSON(w, r, &user)
+
+	if err != nil {
+		app.badRequest(w, r, err.Error())
+		return
+	}
+
+	if !app.IsValidIIN(user.Iin) {
+		app.badRequest(w, r, domain.ErrorInvalidIin.Error())
+		return
+	}
+
+	var newUser domain.User
+
+	newUser.Iin = user.Iin
+	newUser.Login = user.Login
+	newUser.Password = user.Password
+
+	createdUser, err := app.UserUsecases.CreateUser(&newUser)
+
+	if err != nil {
+		app.Logger.Printf("CREATE USER ERROR %v", err)
+		if errors.Is(err, domain.ErrorLoginAlreadyExists) {
+			app.badRequest(w, r, err.Error())
+			return
+		}
+		if errors.Is(err, domain.ErrorIinAlreadyExists) {
+			app.badRequest(w, r, err.Error())
+			return
+		}
+		app.serverError(w, r, err)
+		return
+	}
+
+	err = app.RoleUsecases.AddRoleForUser(createdUser.Id, domain.ROLE_ADMIN)
+
+	if err != nil {
+		app.Logger.Printf("ADD ROLE ERROR %v", err)
+		app.serverError(w, r, err)
+		return
+	}
+
+	createdUser.Role, err = app.RoleUsecases.GetRoleForUser(createdUser.Id)
+
+	if err != nil {
+		app.Logger.Printf("GET ROLE FOR USER ERROR %v", err)
+		app.serverError(w, r, err)
+		return
+	}
+
+	app.writeJson(w, http.StatusOK, envelope{"user": createdUser}, nil)
+}
+
 func (app *application) LoginHandler(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	// 1. get user login and password from request body
 

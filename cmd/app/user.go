@@ -25,6 +25,13 @@ func (app *application) GetUser(w http.ResponseWriter, r *http.Request, ps httpr
 		return
 	}
 
+	user.Role, err = app.RoleUsecases.GetRoleForUser(user.Id)
+
+	if err != nil {
+		app.serverError(w, r, err)
+		return
+	}
+
 	// Get wallets from parsing service
 
 	opts := []grpc.DialOption{
@@ -80,6 +87,23 @@ func (app *application) GetUser(w http.ResponseWriter, r *http.Request, ps httpr
 
 	if err != nil {
 		app.Logger.Printf("get user err %v", err)
+		app.serverError(w, r, err)
+		return
+	}
+}
+
+func (app *application) GetAllUsers(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	//  get all users
+
+	users, err := app.UserUsecases.GetAllUsers()
+
+	if err != nil {
+		app.serverError(w, r, err)
+		return
+	}
+
+	err = app.writeJson(w, http.StatusOK, envelope{"users": users}, nil)
+	if err != nil {
 		app.serverError(w, r, err)
 		return
 	}

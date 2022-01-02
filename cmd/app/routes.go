@@ -17,6 +17,8 @@ func (app *application) router() http.Handler {
 	router.POST("/login", app.LoginHandler)
 	router.POST("/validate", app.ValidateToken)
 	router.GET("/user/:login", app.GetUser)
+	router.POST("/create/admin", app.isAdmin(app.CreateAdmin))
+	router.GET("/get/all/users", app.isAdmin(app.GetAllUsers))
 
 	return router
 }

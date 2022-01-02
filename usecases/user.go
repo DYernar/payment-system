@@ -22,3 +22,7 @@ func (uc *UserUsecases) UpdateUser(user *domain.User) (*domain.User, error) {
 func (uc *UserUsecases) GetUserByLogin(login string) (*domain.User, error) {
 	return uc.Repo.GetUserByLogin(login)
 }
+
+func (uc *UserUsecases) GetAllUsers() ([]*domain.User, error) {
+	return uc.Repo.GetAllUsers()
+}

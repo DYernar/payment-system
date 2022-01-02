@@ -10,6 +10,7 @@ import (
 
 	"google.golang.org/grpc"
 	"google.golang.org/protobuf/types/known/timestamppb"
+	auth "payment.system.com/proto"
 	pb "payment.system.com/proto"
 )
 
@@ -65,10 +66,13 @@ func (a *AuthServiceServer) VerifyUser(ctx context.Context, t *pb.Token) (*pb.Au
 	return &pb.AuthResponse{
 		Message: "user verified",
 		User: &pb.User{
-			Id:        user.Id,
-			Iin:       user.Iin,
-			Login:     user.Login,
-			Role:      nil,
+			Id:    user.Id,
+			Iin:   user.Iin,
+			Login: user.Login,
+			Role: &auth.Role{
+				Id:   user.Role.Id,
+				Name: user.Role.Name,
+			},
 			CreatedAt: timestamppb.New(user.CreatedAt),
 		},
 	}, nil

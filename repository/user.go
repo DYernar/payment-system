@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"context"
 	"database/sql"
 
 	"payment.system.com/domain"
@@ -47,13 +48,14 @@ func (pgRep *PgUserRepository) UpdateUser(user *domain.User) (*domain.User, erro
 
 func (pgRep *PgUserRepository) GetUserByLogin(login string) (*domain.User, error) {
 	query := `
-		SELECT id, iin, login, password, created_at
-		FROM users
-		WHERE login=$1
+		SELECT u.id, u.iin, u.login, u.password, u.created_at, r.id, r.name
+		FROM users as u, roles as r
+		WHERE login=$1 AND u.id = r.user_id
 	`
 
 	var user domain.User
-	err := pgRep.Db.QueryRow(query, login).Scan(&user.Id, &user.Iin, &user.Login, &user.Password, &user.CreatedAt)
+	user.Role = &domain.Role{}
+	err := pgRep.Db.QueryRow(query, login).Scan(&user.Id, &user.Iin, &user.Login, &user.Password, &user.CreatedAt, &user.Role.Id, &user.Role.Name)
 
 	if err != nil {
 		if err.Error() == "sql: no rows in result set" {
@@ -63,4 +65,32 @@ func (pgRep *PgUserRepository) GetUserByLogin(login string) (*domain.User, error
 	}
 
 	return &user, err
+}
+
+func (pgRep *PgUserRepository) GetAllUsers() ([]*domain.User, error) {
+	query := `
+		SELECT u.id, u.iin, u.login, u.password, u.created_at, r.name, r.id
+		FROM users as u, roles as r
+		WHERE u.id = r.user_id
+	`
+	resp, err := pgRep.Db.QueryContext(context.Background(), query)
+
+	if err != nil {
+		return nil, err
+	}
+
+	defer resp.Close()
+
+	users := []*domain.User{}
+
+	for resp.Next() {
+		u := domain.User{
+			Role: &domain.Role{},
+		}
+		resp.Scan(&u.Id, &u.Iin, &u.Login, &u.Password, &u.CreatedAt, &u.Role.Name, &u.Role.Id)
+		users = append(users, &u)
+	}
+
+	return users, nil
+
 }
